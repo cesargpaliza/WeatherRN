@@ -1,11 +1,12 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { WeatherForecast } from '../interfaces/openWeather';
+import { useNavigation } from '@react-navigation/native';
+import ForecastExtendedScreen from '../screens/ForecastExtendedScreen';
 
 interface Props {
     weather: WeatherForecast
 }
-
 
 const WeatherCard = ({ weather } : Props) => {
 
@@ -13,19 +14,31 @@ const WeatherCard = ({ weather } : Props) => {
   const { temp, temp_max, temp_min } = weather.main
   const { country } = weather.sys
   const { name } = weather
+  const navigation = useNavigation();
 
   return (
     <View style={styles.card}>
-      <Text>{  name }</Text><Text>{  country }</Text>
-      <Text>{ description }</Text>
+      <Text style={styles.title}>{ `${name} (${country.toUpperCase()})`}</Text>
+      <Text>{ description.toUpperCase() }</Text>
       <Text>Temperatura Actual: { temp  }°</Text>
-      <Text>{ temp_max }</Text>
-      <Text>{  temp_min }</Text>
-      <TouchableOpacity>
-          <View>
-              <Text>Ver detalle</Text>
+      <Text>{ `Max: ${temp_max}° - Mín: ${temp_min}°` }</Text>
+      <TouchableOpacity 
+          onPress={() => navigation.navigate('ForecastExtended')}
+      >
+          <View style={styles.textButtonContainter}>
+              <Text style={styles.textButton}>VER PRONOSTICO EXTENDIDO</Text>
           </View>
       </TouchableOpacity>
+
+      <TouchableOpacity 
+          onPress={() => navigation.navigate('ForecastExtended')}
+      >
+          <View style={styles.textButtonContainter}>
+              <Text style={styles.textButton}>CAMBIAR CIUDAD</Text>
+          </View>
+      </TouchableOpacity>
+
+
     </View>
   )
 }
@@ -47,5 +60,20 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 7,
         elevation: 6,
-    }
+    }, 
+    title: {
+      fontSize: 20,
+      fontWeight: 'bold',      
+    },
+    textButton: {
+      color: '#2980B9',
+      textAlign: 'center',
+    },
+    textButtonContainter: {
+      paddingTop: 10,
+    },
+
+
+
+
 })

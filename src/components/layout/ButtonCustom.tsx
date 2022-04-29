@@ -7,18 +7,25 @@ interface Props {
     text: string,
     link?: string,
     isLink?: boolean,
+    payload: {},
     action?: () => void,
 }
 
-const ButtonCustom = ({ text = 'Boton', link , isLink = true, action }: Props ) => {
+const ButtonCustom = ({ text = 'Boton', link , payload={}, isLink = true, action }: Props ) => {
 
   const navigation = useNavigation();  
+  const { city } = payload
+
+  useEffect(() => {
+    console.log('payload', payload);    
+  }, [])
+  
 
   return (
     <View style={styles.buttonContainer}>
       <TouchableOpacity 
         onPress={
-          isLink ? () => navigation.navigate(link)
+          isLink ? () => navigation.navigate(link, {city})
                  : () => action()
         }
         style={styles.button}
@@ -35,7 +42,8 @@ const styles = StyleSheet.create({
     buttonContainer: {
       flex: 1,
       justifyContent: "center",
-      paddingHorizontal: 10
+      paddingHorizontal: 10,
+      paddingVertical: 15,
     },
     button: {
       alignItems: "center",
